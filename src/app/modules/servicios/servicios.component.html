@@ -1,0 +1,147 @@
+<div class="servicios-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title" @fadeIn>SERVICIOS</h1>
+      <p class="hero-subtitle" @fadeIn [style.animation-delay.ms]="100">
+        Soluciones tecnológicas integrales para impulsar tu negocio
+      </p>
+    </div>
+  </section>
+
+  <!-- Services Grid Section -->
+  <section class="services-grid-section">
+    <div class="container">
+      <h2 class="section-title" @fadeIn>Nuestros Servicios</h2>
+      <div class="services-grid">
+        @for (service of services; track service.id) {
+          <div class="service-card" @fadeIn [style.animation-delay.ms]="service.id * 100" (click)="openServiceDetail(service)">
+            <div class="service-icon-wrapper">
+              <div class="service-icon">{{ service.icon }}</div>
+            </div>
+            <h3 class="service-title">{{ service.title }}</h3>
+            <p class="service-description">{{ service.description }}</p>
+            <div class="service-features">
+              <ul>
+                @for (feature of service.keyFeatures; track $index) {
+                  <li>
+                    <span class="check-icon">✓</span>
+                    {{ feature }}
+                  </li>
+                }
+              </ul>
+            </div>
+            <button class="service-button">VER DETALLES →</button>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Process Section -->
+  <section class="process-section">
+    <div class="container">
+      <h2 class="section-title" @fadeIn>Nuestro Proceso de Trabajo</h2>
+      <div class="process-steps">
+        @for (step of processSteps; track step.id) {
+          <div class="process-step-card" @fadeIn [style.animation-delay.ms]="step.id * 100">
+            <div class="step-number">{{ step.step }}</div>
+            <div class="step-icon">{{ step.icon }}</div>
+            <h3 class="step-title">{{ step.title }}</h3>
+            <p class="step-description">{{ step.description }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="benefits-section">
+    <div class="container">
+      <h2 class="section-title" @fadeIn>¿Por Qué Elegir Nuestros Servicios?</h2>
+      <div class="benefits-grid">
+        <div class="benefit-card" @fadeIn>
+          <div class="benefit-icon">⚡</div>
+          <h3 class="benefit-title">Entrega Rápida</h3>
+          <p class="benefit-description">
+            Metodologías ágiles que garantizan entregas rápidas y continuas
+          </p>
+        </div>
+        <div class="benefit-card" @fadeIn [style.animation-delay.ms]="100">
+          <div class="benefit-icon">🎯</div>
+          <h3 class="benefit-title">Enfoque Personalizado</h3>
+          <p class="benefit-description">
+            Soluciones adaptadas a las necesidades específicas de cada cliente
+          </p>
+        </div>
+        <div class="benefit-card" @fadeIn [style.animation-delay.ms]="200">
+          <div class="benefit-icon">🔒</div>
+          <h3 class="benefit-title">Calidad Certificada</h3>
+          <p class="benefit-description">
+            ISO 9001:2015 y CMMI DEV3 garantizan la calidad de nuestros procesos
+          </p>
+        </div>
+        <div class="benefit-card" @fadeIn [style.animation-delay.ms]="300">
+          <div class="benefit-icon">💼</div>
+          <h3 class="benefit-title">Equipo Experto</h3>
+          <p class="benefit-description">
+            Profesionales certificados con años de experiencia en el sector
+          </p>
+        </div>
+        <div class="benefit-card" @fadeIn [style.animation-delay.ms]="400">
+          <div class="benefit-icon">📞</div>
+          <h3 class="benefit-title">Soporte Continuo</h3>
+          <p class="benefit-description">
+            Acompañamiento y soporte incluso después de la entrega del proyecto
+          </p>
+        </div>
+        <div class="benefit-card" @fadeIn [style.animation-delay.ms]="500">
+          <div class="benefit-icon">💰</div>
+          <h3 class="benefit-title">Precios Competitivos</h3>
+          <p class="benefit-description">
+            Presupuestos transparentes y competitivos sin comprometer la calidad
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Service Detail Modal -->
+@if (selectedService && isModalOpen) {
+  <div class="modal-overlay" @modalFadeIn (click)="closeModal()">
+    <div class="modal-content" @modalSlideUp (click)="$event.stopPropagation()">
+      <button class="modal-close" (click)="closeModal()" aria-label="Cerrar modal">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+      <div class="modal-body">
+        <div class="modal-image-wrapper">
+          <img [src]="selectedService.image" [alt]="selectedService.title" class="modal-image" />
+        </div>
+        <div class="modal-text">
+          <div class="modal-header">
+            <div class="modal-icon">{{ selectedService.icon }}</div>
+            <h2 class="modal-title">{{ selectedService.title }}</h2>
+          </div>
+          <p class="modal-description">{{ selectedService.detailedDescription }}</p>
+          <div class="modal-features">
+            <h3>Características Principales:</h3>
+            <ul>
+              @for (feature of selectedService.keyFeatures; track $index) {
+                <li>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="check-icon">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  {{ feature }}
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+

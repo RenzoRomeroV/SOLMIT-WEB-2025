@@ -1,0 +1,67 @@
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.custom-cursor {
+  position: fixed;
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-2px, -2px);
+  transition: transform 0.1s ease-out;
+  left: 50%;
+  top: 50%;
+  opacity: 1;
+  will-change: left, top;
+  display: block;
+}
+
+.custom-cursor::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 16px solid #000000;
+  transform: rotate(45deg);
+  filter: drop-shadow(0 0 0.5px rgba(255, 255, 255, 1)) drop-shadow(0 0 1px rgba(255, 255, 255, 0.8));
+  pointer-events: none;
+}
+
+.custom-cursor::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 14px solid #ffffff;
+  transform: rotate(45deg);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.custom-cursor.hover {
+  transform: translate(-2px, -2px) scale(1.2);
+}
+
+.custom-cursor.hover::before {
+  border-bottom-color: rgba(201, 169, 138, 1);
+  filter: drop-shadow(0 0 1px rgba(201, 169, 138, 1)) drop-shadow(0 0 2px rgba(201, 169, 138, 0.8));
+}
+
+.custom-cursor.hover::after {
+  border-bottom-color: rgba(201, 169, 138, 0.2);
+}
+
+.custom-cursor.click {
+  transform: translate(-2px, -2px) scale(0.9);
+}

@@ -1,0 +1,357 @@
+<div class="inicio-container">
+  <!-- Hero Video Section -->
+  <section class="hero-section">
+    <div class="hero-video-wrapper">
+      <video 
+        class="hero-video" 
+        src="/assets/videos/Fondofinal.mp4" 
+        autoplay 
+        muted 
+        loop 
+        playsinline
+        preload="auto"
+        #heroVideo
+      ></video>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <h1 class="hero-title">
+          @for (char of titleChars; track $index) {
+            <span class="letter" [style.animation-delay.ms]="$index * 50">{{ char === ' ' ? '\u00A0' : char }}</span>
+          }
+        </h1>
+        <p class="hero-subtitle" @fadeInUp [style.animation-delay.ms]="800">Talento para impulsar tus proyectos</p>
+        <a class="cta-link" @fadeInUp [style.animation-delay.ms]="1100" (click)="scrollToServices(); $event.preventDefault()" href="#que-hacemos">
+          <span class="cta-text">Conocer más</span>
+          <span class="cta-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUE HACEMOS? -->
+  <section class="services-section" id="que-hacemos">
+    <!-- Chispas animadas de fondo -->
+    <div class="sparks-container">
+      @for (spark of sparks; track spark.id) {
+        <div class="spark" 
+             [style.left.%]="spark.x"
+             [style.top.%]="spark.y"
+             [style.animation-delay.s]="spark.delay"
+             [style.animation-duration.s]="spark.duration"></div>
+      }
+    </div>
+    
+    <div class="container">
+      <h2 class="section-title">¿QUÉ HACEMOS?</h2>
+      <div class="services-grid">
+        @for (service of services; track service.id; let i = $index) {
+          <div class="service-card" [class.reverse]="i % 2 === 1">
+            <div class="service-image-wrapper">
+              <img [src]="service.image" [alt]="service.title" class="service-image" />
+              <div class="service-overlay"></div>
+              <div class="service-number">{{ (i + 1 < 10 ? '0' : '') + (i + 1) }}</div>
+            </div>
+            <div class="service-content">
+              <div class="service-icon">{{ service.icon }}</div>
+              <h3 class="service-title">{{ service.title }}</h3>
+              <p class="service-description">{{ service.detailedDescription }}</p>
+              <button class="service-button" (click)="openModal(service)" aria-label="Leer más sobre {{ service.title }}">
+                <span>LEER MÁS</span>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M6 12L10 8L6 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal -->
+  @if (isModalOpen && selectedService) {
+    <div class="modal-overlay">
+      <div class="modal-content">
+        <button class="modal-close" (click)="closeModal()" aria-label="Cerrar modal">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+        <div class="modal-body">
+          <div class="modal-image-wrapper">
+            <img [src]="selectedService.image" [alt]="selectedService.title" class="modal-image" />
+          </div>
+          <div class="modal-text">
+            <div class="modal-header">
+              <div class="modal-icon">{{ selectedService.icon }}</div>
+              <h2 class="modal-title">{{ selectedService.title }}</h2>
+            </div>
+            <p class="modal-description">{{ selectedService.detailedDescription }}</p>
+            <div class="modal-features">
+              <h3>Beneficios Clave:</h3>
+              <ul>
+                <li>Soluciones personalizadas adaptadas a tus necesidades</li>
+                <li>Equipos altamente calificados y certificados</li>
+                <li>Metodologías probadas y mejores prácticas del mercado</li>
+                <li>Soporte continuo y seguimiento del proyecto</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- How We Do It Section -->
+  <section class="how-section" id="como-lo-hacemos">
+    <!-- Chispas animadas de fondo -->
+    <div class="sparks-container">
+      @for (spark of sparks; track spark.id) {
+        <div class="spark" 
+             [style.left.%]="spark.x"
+             [style.top.%]="spark.y"
+             [style.animation-delay.s]="spark.delay"
+             [style.animation-duration.s]="spark.duration"></div>
+      }
+    </div>
+    
+    <div class="how-wrapper">
+      <h2 class="section-title" @fadeIn>¿CÓMO LO HACEMOS?</h2>
+      
+      <!-- Grid de Cards Expandibles -->
+      <div class="how-cards-grid">
+        @for (item of howWeDoItems; track item.id; let i = $index) {
+          <div class="how-card" 
+               [class.expanded]="expandedCard() === item.id"
+               (mouseenter)="expandCard(item.id)"
+               (mouseleave)="collapseCard()"
+               [attr.data-index]="i"
+               @fadeIn 
+               [style.animation-delay.ms]="i * 100">
+            
+            <!-- Imagen de fondo con parallax -->
+            <div class="card-background" 
+                 [style.background-image]="'url(' + item.image + ')'">
+              <div class="card-overlay"></div>
+            </div>
+
+            <!-- Contenido del card -->
+            <div class="card-content">
+              <!-- Header del card -->
+              <div class="card-header">
+                <div class="card-number-wrapper">
+                  <span class="card-number">{{ item.number }}</span>
+                  <div class="card-number-glow"></div>
+                </div>
+                <div class="card-icon-wrapper">
+                  <span class="card-icon">{{ item.icon }}</span>
+                </div>
+              </div>
+
+              <!-- Título -->
+              <h3 class="card-title">{{ item.title }}</h3>
+
+              <!-- Descripción corta (siempre visible) -->
+              <p class="card-short-description">{{ item.shortDescription }}</p>
+
+              <!-- Contenido expandible -->
+              <div class="card-expandable">
+                <div class="card-full-description">
+                  <p>{{ item.description }}</p>
+                </div>
+                <div class="card-features">
+                  @for (feature of item.features; track feature) {
+                    <div class="feature-item">
+                      <span class="feature-check">✓</span>
+                      <span class="feature-text">{{ feature }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <!-- Indicador de expansión -->
+              <div class="card-expand-indicator">
+                <span class="expand-text">{{ expandedCard() === item.id ? 'OCULTAR' : 'VER MÁS' }}</span>
+                <span class="expand-arrow">{{ expandedCard() === item.id ? '↑' : '↓' }}</span>
+              </div>
+            </div>
+
+            <!-- Efecto de brillo animado -->
+            <div class="card-shine"></div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Solmit Section -->
+  <section class="team-section">
+    <!-- Chispas animadas de fondo -->
+    <div class="sparks-container">
+      @for (spark of sparks; track spark.id) {
+        <div class="spark" 
+             [style.left.%]="spark.x"
+             [style.top.%]="spark.y"
+             [style.animation-delay.s]="spark.delay"
+             [style.animation-duration.s]="spark.duration"></div>
+      }
+    </div>
+    
+    <div class="container">
+      <div class="team-grid">
+        <!-- Team Solmit Image -->
+        <div class="team-image-wrapper" @fadeIn>
+          <img src="/assets/images/solmit2.png" 
+               alt="Team Solmit - Trabajo en equipo" 
+               class="team-image" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trabajamos Con Section -->
+  <section class="work-with-section" id="trabajamos-con">
+    <!-- Chispas animadas de fondo -->
+    <div class="sparks-container">
+      @for (spark of sparks; track spark.id) {
+        <div class="spark" 
+             [style.left.%]="spark.x"
+             [style.top.%]="spark.y"
+             [style.animation-delay.s]="spark.delay"
+             [style.animation-duration.s]="spark.duration"></div>
+      }
+    </div>
+    
+    <div class="work-with-wrapper">
+      <h2 class="section-title" @fadeIn>TRABAJAMOS CON:</h2>
+      
+      <div class="sectors-with-image-container" 
+           [class.has-hover]="visibleTooltip() !== null"
+           @fadeIn>
+        <!-- Lista de sectores a la izquierda -->
+        <div class="sectors-list-container">
+          @for (sector of sectorsWithInfo; track sector.name; let i = $index) {
+            <div class="sector-list-item" 
+                 [style.--index]="i"
+                 (click)="toggleSector(sector.name)"
+                 [class.active]="visibleTooltip() === sector.name"
+                 @fadeIn
+                 [style.animation-delay.ms]="i * 100">
+              
+              <!-- Línea decorativa -->
+              <div class="item-line-accent"></div>
+              
+              <!-- Contenido -->
+              <div class="item-content">
+                <div class="item-number">{{ '0' + (i + 1) }}</div>
+                
+                <div class="item-text-wrapper">
+                  <h3 class="item-title">{{ sector.name }}</h3>
+                  
+                  <div class="item-description" 
+                       [class.visible]="visibleTooltip() === sector.name">
+                    <p>{{ sector.description }}</p>
+                  </div>
+                </div>
+                
+                <!-- Flecha -->
+                <div class="item-arrow">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+              
+              <!-- Fondo -->
+              <div class="item-bg"></div>
+              <div class="item-glow"></div>
+            </div>
+          }
+        </div>
+        
+        <!-- Imagen a la derecha -->
+        <div class="sector-image-container">
+          <div class="image-wrapper-3d" 
+               [class.visible]="visibleTooltip() !== null">
+            <div class="image-glow-ring"></div>
+            <img [src]="getSectorImage()" 
+                 alt="Sectores con los que trabajamos" 
+                 class="sector-display-image"
+                 (error)="onImageError($event)"
+                 (load)="onImageLoad($event)" />
+            <div class="image-shine-overlay"></div>
+          </div>
+          
+          <!-- Placeholder oculto por defecto -->
+          <div class="image-placeholder hidden">
+            <p>Pasa el cursor sobre un sector</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience Section -->
+  <section class="experience-section">
+    <div class="container">
+      <h2 class="section-title" @fadeIn>TENEMOS EXPERIENCIA EN EL SECTOR</h2>
+      <div class="sectors-grid">
+        <div class="sector-card" @fadeIn>
+          <div class="sector-icon">🏛️</div>
+          <h3>SECTOR PÚBLICO</h3>
+          <p>Soluciones tecnológicas para instituciones gubernamentales</p>
+        </div>
+        <div class="sector-card" @fadeIn [style.animation-delay.ms]="200">
+          <div class="sector-icon">🏢</div>
+          <h3>SECTOR PRIVADO</h3>
+          <p>Innovación tecnológica para empresas de todos los tamaños</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technologies Section -->
+  <section class="technologies-section">
+    <div class="container">
+      <h2 class="section-title" @fadeIn>TECNOLOGÍAS Y HERRAMIENTAS QUE UTILIZAMOS</h2>
+      <div class="tech-tabs">
+        <button class="tech-tab active">WEB</button>
+        <button class="tech-tab">MÓVIL</button>
+        <button class="tech-tab">TECNOLOGÍA</button>
+      </div>
+      <div class="tech-content">
+        <p class="tech-description">Utilizamos las tecnologías más modernas y eficientes del mercado</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us Section -->
+  <section class="why-section">
+    <div class="container">
+      <h2 class="section-title" @fadeIn>¿POR QUÉ ELEGIRNOS?</h2>
+      <div class="why-grid">
+        <div class="why-card" @fadeIn>
+          <div class="why-icon">🏆</div>
+          <h3>Calidad Certificada</h3>
+          <p>ISO 9001:2015 y CMMI DEV3 certificados</p>
+        </div>
+        <div class="why-card" @fadeIn [style.animation-delay.ms]="100">
+          <div class="why-icon">👨‍💼</div>
+          <h3>Personal Certificado</h3>
+          <p>Equipo con certificaciones en tecnologías líderes</p>
+        </div>
+        <div class="why-card" @fadeIn [style.animation-delay.ms]="200">
+          <div class="why-icon">🤝</div>
+          <h3>Soporte Continuo</h3>
+          <p>Acompañamiento incluso después de la entrega</p>
+        </div>
+        <div class="why-card" @fadeIn [style.animation-delay.ms]="300">
+          <div class="why-icon">💰</div>
+          <h3>Precios Competitivos</h3>
+          <p>Presupuestos atractivos con metodologías ágiles</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+

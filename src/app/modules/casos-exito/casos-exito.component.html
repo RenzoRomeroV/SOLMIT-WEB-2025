@@ -1,0 +1,160 @@
+<div class="casos-exito-container">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title" @fadeIn>CASOS DE ÉXITO</h1>
+      <p class="hero-subtitle" @fadeIn [style.animation-delay.ms]="100">
+        Proyectos que han transformado negocios y generado resultados excepcionales
+      </p>
+    </div>
+  </section>
+
+  <!-- Projects Grid Section -->
+  <section class="projects-section">
+    <div class="container">
+      <h2 class="section-title" @fadeIn>Proyectos Destacados</h2>
+      <div class="projects-grid">
+        @for (project of projects; track project.id) {
+          <div class="project-card" @fadeIn [style.animation-delay.ms]="project.id * 100" (click)="openProjectDetail(project)">
+            <div class="project-image-wrapper">
+              <div class="project-category">{{ project.category }}</div>
+              <div class="project-overlay">
+                <div class="project-stats">
+                  <div class="stat-item">
+                    <span class="stat-value">{{ project.results.improvement }}</span>
+                    <span class="stat-label">Mejora</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-value">{{ project.results.time }}</span>
+                    <span class="stat-label">Tiempo</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="project-content">
+              <h3 class="project-title">{{ project.title }}</h3>
+              <p class="project-description">{{ project.description }}</p>
+              <div class="project-tech">
+                <span class="tech-tag" *ngFor="let tech of project.technologies">{{ tech }}</span>
+              </div>
+              <button class="project-button">VER DETALLES →</button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials-section">
+    <div class="container">
+      <h2 class="section-title" @fadeIn>Lo Que Dicen Nuestros Clientes</h2>
+      <div class="testimonials-grid">
+        @for (testimonial of testimonials; track testimonial.id) {
+          <div class="testimonial-card" @fadeIn [style.animation-delay.ms]="testimonial.id * 100">
+            <div class="testimonial-header">
+              <div class="testimonial-avatar">{{ testimonial.avatar }}</div>
+              <div class="testimonial-info">
+                <h4 class="testimonial-name">{{ testimonial.name }}</h4>
+                <p class="testimonial-position">{{ testimonial.position }}</p>
+                <p class="testimonial-company">{{ testimonial.company }}</p>
+              </div>
+            </div>
+            <div class="testimonial-rating">
+              @for (star of [1,2,3,4,5]; track star) {
+                <span class="star">⭐</span>
+              }
+            </div>
+            <p class="testimonial-text">"{{ testimonial.text }}"</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Metrics Section -->
+  <section class="metrics-section">
+    <div class="container">
+      <h2 class="section-title" @fadeIn>Resultados que Hablan por Sí Solos</h2>
+      <div class="metrics-grid">
+        <div class="metric-card" @fadeIn>
+          <div class="metric-icon">📊</div>
+          <div class="metric-value">+100</div>
+          <div class="metric-label">Proyectos Completados</div>
+        </div>
+        <div class="metric-card" @fadeIn [style.animation-delay.ms]="100">
+          <div class="metric-icon">⏱️</div>
+          <div class="metric-value">-40%</div>
+          <div class="metric-label">Reducción de Tiempos</div>
+        </div>
+        <div class="metric-card" @fadeIn [style.animation-delay.ms]="200">
+          <div class="metric-icon">💰</div>
+          <div class="metric-value">+60%</div>
+          <div class="metric-label">Aumento de Eficiencia</div>
+        </div>
+        <div class="metric-card" @fadeIn [style.animation-delay.ms]="300">
+          <div class="metric-icon">😊</div>
+          <div class="metric-value">98%</div>
+          <div class="metric-label">Satisfacción del Cliente</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Project Detail Modal -->
+@if (selectedProject && isModalOpen) {
+  <div class="modal-overlay" @modalFadeIn (click)="closeModal()">
+    <div class="modal-content" @modalSlideUp (click)="$event.stopPropagation()">
+      <button class="modal-close" (click)="closeModal()" aria-label="Cerrar modal">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
+      <div class="modal-body">
+        <div class="modal-header-section">
+          <div class="modal-category">{{ selectedProject.category }}</div>
+          <h2 class="modal-title">{{ selectedProject.title }}</h2>
+        </div>
+        <div class="modal-image-wrapper">
+          <div class="modal-placeholder-image">
+            <div class="placeholder-icon">📁</div>
+          </div>
+        </div>
+        <div class="modal-text">
+          <h3 class="modal-subtitle">Desafío</h3>
+          <p class="modal-description">{{ selectedProject.challenge }}</p>
+          
+          <h3 class="modal-subtitle">Solución</h3>
+          <p class="modal-description">{{ selectedProject.solution }}</p>
+          
+          <h3 class="modal-subtitle">Resultados</h3>
+          <div class="modal-results">
+            <div class="result-item">
+              <span class="result-label">Mejora:</span>
+              <span class="result-value">{{ selectedProject.results.improvement }}</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label">Tiempo:</span>
+              <span class="result-value">{{ selectedProject.results.time }}</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label">Cliente:</span>
+              <span class="result-value">{{ selectedProject.client }}</span>
+            </div>
+          </div>
+          
+          <div class="modal-technologies">
+            <h3 class="modal-subtitle">Tecnologías Utilizadas</h3>
+            <div class="tech-list">
+              @for (tech of selectedProject.technologies; track $index) {
+                <span class="tech-badge">{{ tech }}</span>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+

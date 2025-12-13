@@ -1,0 +1,471 @@
+.servicios-container {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  width: 100%;
+  min-height: 400px;
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 2rem;
+  text-align: center;
+}
+
+.hero-content {
+  max-width: 900px;
+  z-index: 2;
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 300;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Services Grid Section */
+.services-grid-section {
+  padding: 6rem 2rem;
+  background: rgba(29, 32, 36, 1);
+}
+
+.section-title {
+  text-align: center;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: rgba(201, 169, 136, 1);
+  margin-bottom: 4rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px rgba(201, 169, 136, 0.5);
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, rgba(201, 169, 136, 0.8), transparent);
+  border-radius: 2px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2.5rem;
+  margin-top: 3rem;
+}
+
+.service-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2.5rem 2rem;
+  border-radius: 15px;
+  text-align: center;
+  border: 1px solid rgba(201, 169, 136, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(201, 169, 136, 0.5);
+  box-shadow: 0 15px 40px rgba(201, 169, 136, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.service-icon-wrapper {
+  margin-bottom: 1.5rem;
+}
+
+.service-icon {
+  font-size: 4rem;
+  display: inline-block;
+}
+
+.service-title {
+  font-size: 1.5rem;
+  color: rgba(201, 169, 136, 1);
+  margin-bottom: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.service-description {
+  color: #e5e7eb;
+  line-height: 1.6;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.service-features {
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.service-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.service-features li {
+  color: #e5e7eb;
+  font-size: 0.9rem;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.check-icon {
+  color: rgba(201, 169, 136, 1);
+  font-weight: bold;
+  min-width: 20px;
+}
+
+.service-button {
+  background: rgba(201, 169, 136, 0.2);
+  color: rgba(201, 169, 136, 1);
+  border: 2px solid rgba(201, 169, 136, 0.5);
+  padding: 0.8rem 2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.service-button:hover {
+  background: rgba(201, 169, 136, 0.3);
+  border-color: rgba(201, 169, 136, 0.8);
+  transform: translateX(5px);
+}
+
+/* Process Section */
+.process-section {
+  padding: 6rem 2rem;
+  background: #ffffff;
+}
+
+.process-steps {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+}
+
+.process-step-card {
+  flex: 1;
+  min-width: 200px;
+  background: #f9fafb;
+  padding: 2rem 1.5rem;
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.process-step-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(201, 169, 136, 0.5);
+  box-shadow: 0 10px 25px rgba(201, 169, 136, 0.15);
+}
+
+.step-number {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: rgba(201, 169, 136, 1);
+  margin-bottom: 0.5rem;
+}
+
+.step-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.step-title {
+  font-size: 1.2rem;
+  color: #1e40af;
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.step-description {
+  color: #6b7280;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Benefits Section */
+.benefits-section {
+  padding: 6rem 2rem;
+  background: rgba(29, 32, 36, 1);
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.benefit-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2.5rem 2rem;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid rgba(201, 169, 136, 0.2);
+  transition: all 0.3s ease;
+}
+
+.benefit-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(201, 169, 136, 0.5);
+  box-shadow: 0 10px 30px rgba(201, 169, 136, 0.2);
+}
+
+.benefit-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+.benefit-title {
+  font-size: 1.3rem;
+  color: rgba(201, 169, 136, 1);
+  margin-bottom: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.benefit-description {
+  color: #e5e7eb;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background: rgba(63, 71, 81, 1);
+  border-radius: 12px;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: slideUp 0.3s ease;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  color: #ffffff;
+}
+
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-image-wrapper {
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  border-radius: 12px 12px 0 0;
+}
+
+.modal-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-text {
+  padding: 1.5rem;
+  background: rgba(63, 71, 81, 1);
+  color: #ffffff;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.modal-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  color: rgba(200, 170, 138, 1);
+  margin: 0;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.modal-description {
+  color: #ffffff;
+  line-height: 1.6;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.modal-features {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1.25rem;
+  border-radius: 8px;
+  border-left: 4px solid rgba(200, 170, 138, 1);
+  margin-top: 1rem;
+}
+
+.modal-features h3 {
+  color: rgba(200, 170, 138, 1);
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.modal-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.modal-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  color: #ffffff;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.modal-features li:last-child {
+  margin-bottom: 0;
+}
+
+.modal-features .check-icon {
+  color: rgba(200, 170, 138, 1);
+  min-width: 18px;
+  margin-top: 2px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .process-steps {
+    flex-direction: column;
+  }
+
+  .process-step-card {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-section {
+    padding: 4rem 1.5rem;
+  }
+
+  .services-grid-section,
+  .process-section,
+  .benefits-section {
+    padding: 4rem 1.5rem;
+  }
+}
+
