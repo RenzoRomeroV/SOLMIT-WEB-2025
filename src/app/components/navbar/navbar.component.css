@@ -49,6 +49,26 @@ nav.navbar {
   background-color: transparent !important;
 }
 
+/* Excepción: el icono de 3 rayas debe verse siempre (no transparente) */
+.navbar:not(.scrolled) .menu-toggle span {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+}
+
+/* Overlay del menú: fondo negro por defecto (para móvil cuando se abre el menú) */
+.navbar .navbar-overlay {
+  background-color: #000000 !important;
+  background: #000000 !important;
+}
+
+/* En escritorio el overlay no lleva fondo (solo es el contenedor de los enlaces) */
+@media (min-width: 969px) {
+  .navbar .navbar-overlay {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+}
+
 /* Forzar que el elemento nav no tenga ningún fondo por defecto */
 nav {
   background: transparent !important;
@@ -87,7 +107,8 @@ nav {
 .navbar-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 1.5rem 0 1.5rem 0;
+  padding: 1.5rem 0;
+  padding-top: max(1.5rem, env(safe-area-inset-top));
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -132,11 +153,19 @@ nav {
 }
 
 
+/* Contenedor del menú + CTA: en desktop va en la barra, en móvil es el overlay */
+.navbar-overlay {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  flex-shrink: 0;
+  cursor: none !important;
+}
+
 .navbar-menu {
   display: flex;
   list-style: none;
   margin: 0;
-  margin-left: auto;
   margin-right: 2rem;
   padding: 0;
   gap: 0.5rem;
@@ -309,6 +338,13 @@ nav {
   position: relative;
   z-index: 1001;
   transition: transform 0.3s ease;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.menu-toggle:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .menu-toggle:hover {
@@ -318,7 +354,7 @@ nav {
 .menu-toggle span {
   width: 28px;
   height: 2.5px;
-  background: #000000;
+  background: #ffffff;
   border-radius: 2px;
   transition: all 0.3s ease;
   transform-origin: center;
@@ -326,7 +362,7 @@ nav {
 
 .menu-toggle.active span:nth-child(1) {
   transform: translateY(8px) rotate(45deg);
-  background: #000000;
+  background: #ffffff;
 }
 
 .menu-toggle.active span:nth-child(2) {
@@ -336,74 +372,116 @@ nav {
 
 .menu-toggle.active span:nth-child(3) {
   transform: translateY(-8px) rotate(-45deg);
-  background: #000000;
+  background: #ffffff;
 }
 
-/* Responsive */
+/* Responsive: móvil — solo logo + hamburguesa en la barra; overlay negro con módulos y CONTACTO centrados */
 @media (max-width: 968px) {
-  .menu-toggle {
-    display: flex;
+  .navbar-container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 
-  .navbar-menu {
+  .navbar-logo {
+    margin-left: 0;
+  }
+
+  .menu-toggle {
+    display: flex;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px;
+  }
+
+  .menu-toggle span {
+    background: #ffffff;
+  }
+
+  .menu-toggle.active span {
+    background: #ffffff !important;
+  }
+
+  /* Overlay a pantalla completa en móvil: fondo negro, módulos y botón centrados */
+  .navbar-overlay {
     position: fixed;
     top: 0;
-    left: -100%;
-    flex-direction: column;
-    background: #000000;
+    left: 0;
+    right: 0;
+    bottom: 0;
     width: 100%;
-    height: 100vh;
-    padding: 5rem 2rem 2rem;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    height: 100%;
+    height: 100dvh;
+    min-height: 100vh;
+    background: #000000 !important;
+    background-color: #000000 !important;
+    margin: 0;
+    left: -100%;
+    z-index: 1000;
     transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    gap: 0;
-    justify-content: flex-start;
-    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    padding: max(2rem, env(safe-area-inset-top)) 2rem max(2rem, env(safe-area-inset-bottom));
     overflow-y: auto;
   }
 
-  .navbar-menu.active {
+  .navbar-overlay.active {
     left: 0;
   }
 
-  .navbar-item {
+  .navbar-overlay .navbar-menu {
+    position: static;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+    align-items: center;
     width: 100%;
-    padding: 0.5rem 0;
+    max-width: 320px;
+  }
+
+  .navbar-overlay .navbar-item {
+    width: 100%;
+    padding: 0.25rem 0;
     opacity: 0;
     animation: slideInRight 0.4s ease forwards;
   }
 
-  .navbar-menu.active .navbar-item:nth-child(1) { animation-delay: 0.1s; }
-  .navbar-menu.active .navbar-item:nth-child(2) { animation-delay: 0.15s; }
-  .navbar-menu.active .navbar-item:nth-child(3) { animation-delay: 0.2s; }
-  .navbar-menu.active .navbar-item:nth-child(4) { animation-delay: 0.25s; }
-  .navbar-menu.active .navbar-item:nth-child(5) { animation-delay: 0.3s; }
-  .navbar-menu.active .navbar-item:nth-child(6) { animation-delay: 0.35s; }
+  .navbar-overlay.active .navbar-item:nth-child(1) { animation-delay: 0.08s; }
+  .navbar-overlay.active .navbar-item:nth-child(2) { animation-delay: 0.14s; }
+  .navbar-overlay.active .navbar-item:nth-child(3) { animation-delay: 0.2s; }
+  .navbar-overlay.active .navbar-item:nth-child(4) { animation-delay: 0.26s; }
+  .navbar-overlay.active .navbar-item:nth-child(5) { animation-delay: 0.32s; }
 
-  .navbar-link {
+  .navbar-overlay .navbar-link {
     display: block;
     width: 100%;
-    padding: 1.2rem 1.5rem;
-    font-size: 1rem;
+    padding: 1rem 1.5rem;
+    font-size: 1.05rem;
+    text-align: center;
     border-radius: 8px;
+    color: #ffffff;
   }
 
-  .navbar-link::after {
+  .navbar-overlay .navbar-link::after {
     height: 2px;
-    bottom: 0.8rem;
+    bottom: 0.75rem;
   }
 
-  .navbar-link:hover::after,
-  .navbar-link.active::after {
+  .navbar-overlay .navbar-link:hover::after,
+  .navbar-overlay .navbar-link.active::after {
     width: calc(100% - 3rem);
   }
 
-  .navbar-cta-button {
+  .navbar-overlay .navbar-cta-button {
     display: block;
-    width: calc(100% - 3rem);
-    margin: 1rem 1.5rem;
+    width: 100%;
+    max-width: 280px;
+    margin: 0;
     text-align: center;
     padding: 1rem 2rem;
+    font-size: 1rem;
   }
 }
 
@@ -420,14 +498,21 @@ nav {
 
 @media (max-width: 480px) {
   .navbar-container {
-    padding: 1rem 1.5rem;
+    padding: 1rem 1rem;
+    padding-top: max(1rem, env(safe-area-inset-top));
   }
 
   .navbar.scrolled .navbar-container {
-    padding: 0.8rem 1.5rem;
+    padding: 0.8rem 1rem;
+    padding-top: max(0.8rem, env(safe-area-inset-top));
   }
 
   .logo-image {
-    height: 38px;
+    height: 36px;
+    max-height: 10vw;
+  }
+
+  .navbar-overlay {
+    padding: max(2rem, calc(1rem + env(safe-area-inset-top))) 1rem max(2rem, env(safe-area-inset-bottom));
   }
 }

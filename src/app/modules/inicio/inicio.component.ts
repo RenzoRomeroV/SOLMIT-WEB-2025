@@ -1,63 +1,38 @@
-import { Component, OnInit, OnDestroy, signal, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  AfterViewInit,
+  signal,
+  ViewChild,
+  ElementRef
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
-
-interface Slide {
-  id: number;
-  title: string;
-  subtitle: string;
-  buttonText: string;
-  backgroundClass: string;
-  backgroundImage: string;
-  backgroundVideo?: string;
-  isVideo?: boolean;
-}
-
-interface Service {
-  id: number;
-  title: string;
-  icon: string;
-  description: string;
-  detailedDescription: string;
-  image: string;
-  video?: string;
-}
-
-interface Methodology {
-  id: number;
-  name: string;
-  icon: string;
-  description: string;
-}
-
-interface ProcessStep {
-  id: number;
-  step: string;
-  title: string;
-  description: string;
-  icon: string;
-}
-
-interface HowWeDoItem {
-  id: number;
-  number: string;
-  title: string;
-  shortDescription: string;
-  description: string;
-  icon: string;
-  image: string;
-  features: string[];
-}
-
-interface SectorInfo {
-  name: string;
-  description: string;
-  position: { x: number; y: number };
-  tooltipPosition: { x: number; y: number };
-  arrowPath?: { viewBox: string; d: string };
-  arrowHead?: { d: string };
-  image?: string;
-}
+import {
+  howWeDoItemsData,
+  methodologiesData,
+  privateSectorItemsData,
+  publicSectorItemsData,
+  processStepsData,
+  sectorsWithInfoData,
+  servicesData,
+  slidesData,
+  techCategoriesData,
+  teamRolesData,
+  workSectorsData
+} from './inicio.data';
+import {
+  HowWeDoItem,
+  Methodology,
+  ProcessStep,
+  SectorInfo,
+  SectorCarouselItem,
+  Service,
+  Slide,
+  TechCategory,
+  TechCategoryId
+} from './inicio.types';
 
 @Component({
   selector: 'app-inicio',
@@ -86,101 +61,42 @@ interface SectorInfo {
     ])
   ]
 })
-export class InicioComponent implements OnInit, OnDestroy {
-  @ViewChild('heroVideo', { static: true }) heroVideo!: ElementRef<HTMLVideoElement>;
+export class InicioComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('heroVideoDesktop', { static: false }) heroVideoDesktop?: ElementRef<HTMLVideoElement>;
+  @ViewChild('heroVideoMobile', { static: false }) heroVideoMobile?: ElementRef<HTMLVideoElement>;
+  @ViewChild('publicCarousel') publicCarousel?: ElementRef<HTMLDivElement>;
+  @ViewChild('privateCarousel') privateCarousel?: ElementRef<HTMLDivElement>;
   currentSlide = signal(0);
   autoSlideInterval: any;
+  private sectionObserver: IntersectionObserver | null = null;
+  private serviceItemObservers: IntersectionObserver[] = [];
+  private autoScrollTimers: number[] = [];
   selectedService: Service | null = null;
   isModalOpen = false;
   titleChars: string[] = 'FÁBRICA DE SOFTWARE'.split('');
   expandedCard = signal<number | null>(null);
   visibleTooltip = signal<string | null>(null);
 
-  slides: Slide[] = [
-    {
-      id: 1,
-      title: 'Fabrica de Software',
-      subtitle: 'TALENTO PARA IMPULSAR TUS PROYECTOS',
-      buttonText: 'CONOCER MÁS',
-      backgroundClass: 'slide-1',
-      backgroundImage: '/assets/images/fondotefo3.jpeg',
-      backgroundVideo: '/assets/video/fondo1.mp4',
-      isVideo: true
-    },
-    {
-      id: 2,
-      title: 'MATERIALIZAMOS TUS IDEAS CON TECNOLOGÍA',
-      subtitle: 'MEJORA E INNOVA CON TENDENCIAS TECNOLOGÍAS',
-      buttonText: 'CONOCER MÁS',
-      backgroundClass: 'slide-2',
-      backgroundImage: '/assets/images/test6.png'
-    },
-    {
-      id: 3,
-      title: 'CONSULTORÍA TI',
-      subtitle: 'TE AYUDAMOS A DAR EL SALTO A LA TRANSFORMACIÓN DIGITAL DE TU NEGOCIO',
-      buttonText: 'CONOCER MÁS',
-      backgroundClass: 'slide-3',
-      backgroundImage: '/assets/images/FondoTI.png'
-    }
-  ];
-
-  services: Service[] = [
-    {
-      id: 1,
-      title: 'It Staff Augmentation',
-      icon: '👥',
-      description: 'Amplía tu equipo con talento especializado',
-      detailedDescription: 'Integramos profesionales altamente calificados a tu equipo de desarrollo. Nuestros especialistas se adaptan rápidamente a tus procesos y metodologías, permitiéndote escalar tu capacidad de desarrollo sin los costos y tiempos de contratación tradicionales.',
-      image: '/assets/images/services/It-Staff-Augmentation.png'
-    },
-    {
-      id: 2,
-      title: 'Consultoría TI',
-      icon: '💼',
-      description: 'Asesoría estratégica para tu transformación digital',
-      detailedDescription: 'Te ayudamos a definir e implementar estrategias tecnológicas que impulsen tu negocio. Nuestros consultores analizan tus procesos actuales y diseñan soluciones personalizadas que optimizan la eficiencia y generan valor real para tu organización.',
-      image: '/assets/images/services/Consultoría-TI.png'
-    },
-    {
-      id: 3,
-      title: 'Desarrollo Ágil de Software',
-      icon: '⚡',
-      description: 'Metodologías ágiles para resultados rápidos',
-      detailedDescription: 'Desarrollamos software de alta calidad utilizando metodologías ágiles como Scrum y Kanban. Nuestro enfoque iterativo te permite ver resultados tangibles desde las primeras semanas, con entregas continuas que se adaptan a tus necesidades cambiantes.',
-      image: '/assets/images/services/Desarrollo-Ágil-Software.png'
-    },
-    {
-      id: 4,
-      title: 'Fábrica de Software',
-      icon: '🏭',
-      description: 'Producción eficiente y escalable de software',
-      detailedDescription: 'Operamos como una fábrica de software completa, desde el diseño hasta el mantenimiento. Contamos con procesos estandarizados y equipos multidisciplinarios que garantizan entregas consistentes, escalables y de alta calidad para proyectos de cualquier tamaño.',
-      image: '/assets/images/services/Fábrica-Software.png'
-    },
-    {
-      id: 5,
-      title: 'Testing de Software',
-      icon: '✅',
-      description: 'Garantía de calidad en cada proyecto',
-      detailedDescription: 'Aseguramos la calidad de tu software mediante pruebas exhaustivas y automatizadas. Nuestros QA engineers utilizan las mejores herramientas y prácticas del mercado para detectar y prevenir defectos, garantizando que tu producto cumpla con los más altos estándares de calidad.',
-      image: '/assets/images/services/Testing-Software.png'
-    }
-  ];
+  slides: Slide[] = slidesData;
+  services: Service[] = servicesData;
 
   ngOnInit() {
     this.currentSlide.set(0);
-    // Asegurar que el video se reproduzca
-    setTimeout(() => {
-      if (this.heroVideo && this.heroVideo.nativeElement) {
-        const video = this.heroVideo.nativeElement;
-        video.muted = true; // Asegurar que esté silenciado
-        video.play().catch((err: any) => console.log('Error al reproducir video:', err));
-      }
-    }, 500);
-    
     // Configurar animaciones de scroll
     this.setupScrollAnimations();
+  }
+
+  ngAfterViewInit() {
+    this.startAutoScroll();
+    setTimeout(() => {
+      const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+      const video = isMobile ? this.heroVideoMobile : this.heroVideoDesktop;
+      if (video?.nativeElement) {
+        const el = video.nativeElement;
+        el.muted = true;
+        el.play().catch(() => {});
+      }
+    }, 300);
   }
 
   setupScrollAnimations() {
@@ -190,7 +106,7 @@ export class InicioComponent implements OnInit, OnDestroy {
       rootMargin: '400px 0px 0px 0px' // Activar 400px antes de que entre en el viewport
     };
 
-    const observer = new IntersectionObserver((entries) => {
+    this.sectionObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('animate-in');
@@ -203,7 +119,7 @@ export class InicioComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       const sections = document.querySelectorAll('.services-section, .how-section, .methodologies-section, .process-section, .team-section');
       sections.forEach(section => {
-        observer.observe(section);
+        this.sectionObserver?.observe(section);
         // Activar inmediatamente si ya está visible
         const rect = section.getBoundingClientRect();
         if (rect.top < window.innerHeight + 400) {
@@ -223,6 +139,7 @@ export class InicioComponent implements OnInit, OnDestroy {
             }
           });
         }, { threshold: 0.05, rootMargin: '300px 0px 0px 0px' });
+        this.serviceItemObservers.push(itemObserver);
         itemObserver.observe(item);
       });
     }, 100); // Reducido de 1000ms a 100ms
@@ -253,6 +170,7 @@ export class InicioComponent implements OnInit, OnDestroy {
   }
 
   toggleSector(sectorName: string) {
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) return;
     if (this.visibleTooltip() === sectorName) {
       this.visibleTooltip.set(null);
     } else {
@@ -356,8 +274,17 @@ export class InicioComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.stopAutoScroll();
     if (this.autoSlideInterval) {
       clearInterval(this.autoSlideInterval);
+    }
+    if (this.sectionObserver) {
+      this.sectionObserver.disconnect();
+      this.sectionObserver = null;
+    }
+    if (this.serviceItemObservers.length > 0) {
+      this.serviceItemObservers.forEach(observer => observer.disconnect());
+      this.serviceItemObservers = [];
     }
   }
 
@@ -389,271 +316,81 @@ export class InicioComponent implements OnInit, OnDestroy {
     }
   }
 
-  methodologies: Methodology[] = [
-    {
-      id: 1,
-      name: 'Scrum',
-      icon: '🔄',
-      description: 'Metodología ágil que organiza el trabajo en sprints cortos para entregas incrementales y rápidas.'
-    },
-    {
-      id: 2,
-      name: 'Kanban',
-      icon: '📋',
-      description: 'Sistema visual que optimiza el flujo de trabajo y mejora la eficiencia del equipo.'
-    },
-    {
-      id: 3,
-      name: 'DevOps',
-      icon: '⚙️',
-      description: 'Integración continua entre desarrollo y operaciones para despliegues más rápidos y seguros.'
-    },
-    {
-      id: 4,
-      name: 'Design Thinking',
-      icon: '💡',
-      description: 'Enfoque centrado en el usuario para crear soluciones innovadoras y efectivas.'
+  methodologies: Methodology[] = methodologiesData;
+  processSteps: ProcessStep[] = processStepsData;
+  teamRoles: string[] = teamRolesData;
+  workSectors: string[] = workSectorsData;
+  sectorsWithInfo: SectorInfo[] = sectorsWithInfoData;
+  publicSectorItems: SectorCarouselItem[] = publicSectorItemsData;
+  privateSectorItems: SectorCarouselItem[] = privateSectorItemsData;
+  howWeDoItems: HowWeDoItem[] = howWeDoItemsData;
+  techCategories: TechCategory[] = techCategoriesData;
+  activeTechTab = signal<TechCategoryId>('web');
+  hasSelectedTech = signal(false);
+
+  scrollCarousel(target: 'public' | 'private', direction: number) {
+    const container =
+      target === 'public' ? this.publicCarousel?.nativeElement : this.privateCarousel?.nativeElement;
+    if (!container) {
+      return;
     }
-  ];
+    this.scrollByCard(container, direction);
+  }
 
-  processSteps: ProcessStep[] = [
-    {
-      id: 1,
-      step: '01',
-      title: 'Análisis',
-      description: 'Comprendemos tus necesidades y definimos los requisitos del proyecto.',
-      icon: '🔍'
-    },
-    {
-      id: 2,
-      step: '02',
-      title: 'Diseño',
-      description: 'Creamos la arquitectura y el diseño de la solución tecnológica.',
-      icon: '🎨'
-    },
-    {
-      id: 3,
-      step: '03',
-      title: 'Desarrollo',
-      description: 'Construimos la solución con código limpio y mejores prácticas.',
-      icon: '💻'
-    },
-    {
-      id: 4,
-      step: '04',
-      title: 'Testing',
-      description: 'Garantizamos la calidad mediante pruebas exhaustivas y automatizadas.',
-      icon: '✅'
-    },
-    {
-      id: 5,
-      step: '05',
-      title: 'Entrega',
-      description: 'Desplegamos la solución y brindamos soporte continuo.',
-      icon: '🚀'
+  private startAutoScroll() {
+    this.stopAutoScroll();
+    this.setupAutoScroll(this.publicCarousel?.nativeElement);
+    this.setupAutoScroll(this.privateCarousel?.nativeElement);
+  }
+
+  private setupAutoScroll(container?: HTMLDivElement | null) {
+    if (!container) {
+      return;
     }
-  ];
+    const timerId = window.setInterval(() => {
+      this.scrollByCard(container, 1, true);
+    }, 3500);
+    this.autoScrollTimers.push(timerId);
+  }
 
-  teamRoles: string[] = [
-    'Jefe de Proyectos',
-    'Analistas Programadores',
-    'Especialistas UX / UI',
-    'Ingeniero en Sistemas',
-    'Analistas Funcionales',
-    'Arquitectos de Software',
-    'Diseñadores',
-    'Consultores',
-    'DBA',
-    'DevOps'
-  ];
-
-  workSectors: string[] = [
-    'Gobierno',
-    'Seguro',
-    'Retail',
-    'Banca',
-    'Empresas de Servicios',
-    'Centro de Atención'
-  ];
-
-  sectorsWithInfo: SectorInfo[] = [
-    {
-      name: 'Gobierno',
-      description: 'Desarrollamos soluciones tecnológicas para instituciones gubernamentales, mejorando la eficiencia y transparencia de los servicios públicos.',
-      position: { x: 5, y: 10 },
-      tooltipPosition: { x: 50, y: 100 }, // Debajo del card
-      arrowPath: { 
-        viewBox: '0 0 1000 800', 
-        d: 'M 100 40 L 420 220' 
-      },
-      arrowHead: { 
-        d: 'M 420 220 L 400 215 L 405 220 L 400 225 Z' 
-      },
-      image: '/assets/images/gobiernno2.png'
-    },
-    {
-      name: 'Seguro',
-      description: 'Sistemas especializados para compañías de seguros, optimizando procesos de gestión de pólizas, reclamaciones y análisis de riesgos.',
-      position: { x: 95, y: 10 },
-      tooltipPosition: { x: 50, y: 100 }, // Debajo del card
-      arrowPath: { 
-        viewBox: '0 0 1000 800', 
-        d: 'M 900 40 L 580 220' 
-      },
-      arrowHead: { 
-        d: 'M 580 220 L 600 215 L 595 220 L 600 225 Z' 
-      },
-      image: '/assets/images/seguro.png'
-    },
-    {
-      name: 'Banco',
-      description: 'Soluciones bancarias seguras y escalables, incluyendo sistemas de transacciones, banca digital y gestión de cuentas con altos estándares de seguridad.',
-      position: { x: 97, y: 50 },
-      tooltipPosition: { x: 50, y: 100 }, // Debajo del card
-      arrowPath: { 
-        viewBox: '0 0 1000 800', 
-        d: 'M 960 400 L 580 400' 
-      },
-      arrowHead: { 
-        d: 'M 580 400 L 600 400 L 595 395 L 600 400 L 595 405 Z' 
-      },
-      image: '/assets/images/banco.png'
-    },
-    {
-      name: 'Centro de Atención',
-      description: 'Plataformas de atención al cliente y gestión de contact centers, mejorando la experiencia del usuario y la eficiencia operativa.',
-      position: { x: 95, y: 90 },
-      tooltipPosition: { x: 50, y: 0 }, // Arriba del card (porque está abajo)
-      arrowPath: { 
-        viewBox: '0 0 1000 800', 
-        d: 'M 900 760 L 580 580' 
-      },
-      arrowHead: { 
-        d: 'M 580 580 L 600 585 L 595 580 L 600 575 Z' 
-      },
-      image: '/assets/images/atencion-cliente.png'
-    },
-    {
-      name: 'Empresas de Servicios',
-      description: 'Sistemas personalizados para empresas de servicios, automatizando procesos y mejorando la gestión de operaciones y clientes.',
-      position: { x: 5, y: 90 },
-      tooltipPosition: { x: 50, y: 0 }, // Arriba del card (porque está abajo)
-      arrowPath: { 
-        viewBox: '0 0 1000 800', 
-        d: 'M 100 760 L 420 580' 
-      },
-      arrowHead: { 
-        d: 'M 420 580 L 400 575 L 405 580 L 400 585 Z' 
-      },
-      image: '/assets/images/automatizacion.png'
-    },
-    {
-      name: 'Retail',
-      description: 'Soluciones para el sector retail, incluyendo sistemas de punto de venta, gestión de inventario y plataformas de e-commerce.',
-      position: { x: 3, y: 50 },
-      tooltipPosition: { x: 50, y: 100 }, // Debajo del card
-      arrowPath: { 
-        viewBox: '0 0 1000 800', 
-        d: 'M 100 100 L 325 150'
-      },
-      arrowHead: { 
-        d: 'M 300 400 L 320 400 L 315 395 L 320 400 L 315 405 Z' 
-      },
-      image: '/assets/images/retail.png'
+  private scrollByCard(container: HTMLDivElement, direction: number, loop = false) {
+    const card = container.querySelector<HTMLElement>('.experience-item');
+    const gapValue = getComputedStyle(container).columnGap || getComputedStyle(container).gap || '0';
+    const gap = Number.parseFloat(gapValue) || 0;
+    const cardWidth = card?.getBoundingClientRect().width ?? 0;
+    const step = Math.max(cardWidth + gap, 220);
+    if (loop && container.scrollLeft + container.clientWidth >= container.scrollWidth - 8) {
+      container.scrollTo({ left: 0, behavior: 'smooth' });
+      return;
     }
-  ];
+    container.scrollBy({ left: direction * step, behavior: 'smooth' });
+  }
 
-  howWeDoItems: HowWeDoItem[] = [
-    {
-      id: 1,
-      number: '01',
-      title: 'SCRUM',
-      shortDescription: 'Metodología ágil para entregas rápidas',
-      description: 'Organizamos el trabajo en sprints cortos para entregas incrementales y rápidas. Permite adaptación continua y mejora constante del proceso de desarrollo.',
-      icon: '🔄',
-      image: '/assets/images/scrum.png',
-      features: ['Sprints de 2-4 semanas', 'Reuniones diarias', 'Retrospectivas continuas', 'Product Owner dedicado']
-    },
-    {
-      id: 2,
-      number: '02',
-      title: 'KANBAN',
-      shortDescription: 'Sistema visual de flujo de trabajo',
-      description: 'Optimizamos el flujo de trabajo y mejoramos la eficiencia del equipo. Facilita la visualización del progreso y la identificación de cuellos de botella.',
-      icon: '📋',
-      image: '/assets/images/kanban.png',
-      features: ['Visualización en tiempo real', 'Límites de trabajo en progreso', 'Flujo continuo', 'Mejora continua']
-    },
-    {
-      id: 3,
-      number: '03',
-      title: 'DEVOPS',
-      shortDescription: 'Integración continua y despliegues',
-      description: 'Integración continua entre desarrollo y operaciones para despliegues más rápidos y seguros. Automatización de procesos y mejora continua de la infraestructura.',
-      icon: '⚙️',
-      image: '/assets/images/devops.png',
-      features: ['CI/CD automatizado', 'Infraestructura como código', 'Monitoreo continuo', 'Despliegues seguros']
-    },
-    {
-      id: 4,
-      number: '04',
-      title: 'DESIGN THINKING',
-      shortDescription: 'Enfoque centrado en el usuario',
-      description: 'Creamos soluciones innovadoras y efectivas centradas en el usuario. Proceso iterativo que combina empatía, creatividad y racionalidad.',
-      icon: '💡',
-      image: '/assets/images/DESIGN-THINKING.png',
-      features: ['Empatía con usuarios', 'Prototipado rápido', 'Iteración constante', 'Validación temprana']
-    },
-    {
-      id: 5,
-      number: '05',
-      title: 'ANÁLISIS',
-      shortDescription: 'Comprensión profunda de necesidades',
-      description: 'Comprendemos tus necesidades y definimos los requisitos del proyecto. Realizamos un análisis exhaustivo para garantizar que la solución cumpla con tus objetivos.',
-      icon: '🔍',
-      image: '/assets/images/Analisis.jpg',
-      features: ['Análisis de requisitos', 'Documentación técnica', 'Arquitectura de solución', 'Planificación detallada']
-    },
-    {
-      id: 6,
-      number: '06',
-      title: 'DISEÑO',
-      shortDescription: 'Arquitectura y prototipos',
-      description: 'Creamos la arquitectura y el diseño de la solución tecnológica. Desarrollamos prototipos y wireframes que guían el proceso de desarrollo.',
-      icon: '🎨',
-      image: '/assets/images/Diseño.jpg',
-      features: ['Arquitectura de software', 'Diseño UX/UI', 'Prototipos interactivos', 'Sistemas escalables']
-    },
-    {
-      id: 7,
-      number: '07',
-      title: 'DESARROLLO',
-      shortDescription: 'Código limpio y mejores prácticas',
-      description: 'Construimos la solución con código limpio y mejores prácticas. Implementamos metodologías ágiles para garantizar entregas incrementales y de calidad.',
-      icon: '💻',
-      image: '/assets/images/Desarrollo.jpg',
-      features: ['Código limpio', 'Pair programming', 'Code reviews', 'Testing unitario']
-    },
-    {
-      id: 8,
-      number: '08',
-      title: 'TESTING',
-      shortDescription: 'Calidad y validación exhaustiva',
-      description: 'Garantizamos la calidad mediante pruebas exhaustivas y automatizadas. Validamos que la solución cumpla con todos los requisitos y estándares de calidad.',
-      icon: '✅',
-      image: '/assets/images/TESTING.png',
-      features: ['Testing automatizado', 'QA exhaustivo', 'Pruebas de rendimiento', 'Validación de requisitos']
-    },
-    {
-      id: 9,
-      number: '09',
-      title: 'ENTREGA',
-      shortDescription: 'Despliegue y soporte continuo',
-      description: 'Desplegamos la solución y brindamos soporte continuo. Aseguramos una transición fluida y proporcionamos mantenimiento y actualizaciones.',
-      icon: '🚀',
-      image: '/assets/images/ENTREGA.png',
-      features: ['Despliegue seguro', 'Documentación completa', 'Capacitación', 'Soporte 24/7']
+  private stopAutoScroll() {
+    this.autoScrollTimers.forEach(timerId => window.clearInterval(timerId));
+    this.autoScrollTimers = [];
+  }
+
+  getActiveTechItems(): string[] {
+    return this.techCategories.find(category => category.id === this.activeTechTab())?.items ?? [];
+  }
+
+  getTechItemsFor(categoryId: TechCategoryId): string[] {
+    return this.techCategories.find(category => category.id === categoryId)?.items ?? [];
+  }
+
+  getActiveTechLabel(): string {
+    return this.techCategories.find(category => category.id === this.activeTechTab())?.label ?? '';
+  }
+
+  selectTechTab(tab: TechCategoryId) {
+    if (typeof window !== 'undefined' && window.innerWidth <= 768) return;
+    if (this.activeTechTab() === tab && this.hasSelectedTech()) {
+      this.hasSelectedTech.set(false);
+      return;
     }
-  ];
+    this.activeTechTab.set(tab);
+    this.hasSelectedTech.set(true);
+  }
 }
 

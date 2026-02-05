@@ -303,3 +303,17 @@
   }
 }
 
+@media (max-width: 480px) {
+  .hero-section {
+    padding: 3rem 1rem;
+    padding-top: max(3rem, calc(80px + env(safe-area-inset-top)));
+  }
+
+  .historia-section,
+  .mision-vision-section,
+  .valores-section,
+  .certificaciones-section {
+    padding: 2.5rem 1rem;
+  }
+}
+

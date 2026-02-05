@@ -30,6 +30,11 @@ import { CommonModule } from '@angular/common';
       font-size: 1.2rem;
       color: #6b7280;
     }
+    @media (max-width: 480px) {
+      .placeholder-container { padding: 1.5rem 1rem; }
+      h1 { font-size: 1.75rem; }
+      p { font-size: 1rem; }
+    }
   `]
 })
 export class ContactoComponent {}

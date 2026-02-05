@@ -13,6 +13,17 @@ a, button, .service-button, .navbar-link, .navbar-cta-button, input, textarea, s
   cursor: none !important;
 }
 
+/* En dispositivos táctiles (móvil): cursor normal y mejor uso de touch */
+@media (hover: none) and (pointer: coarse) {
+  body,
+  a, button, .service-button, .navbar-link, .navbar-cta-button, input, textarea, select {
+    cursor: auto;
+  }
+  a, button {
+    cursor: pointer;
+  }
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px; /* Espacio para el navbar fijo */
@@ -100,8 +111,29 @@ a:focus {
   padding: 0 2rem;
 }
 
+/* Responsive: tablets */
 @media (max-width: 768px) {
   .container {
     padding: 0 1.5rem;
+  }
+}
+
+/* Responsive: phones */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  html {
+    scroll-padding-top: 60px;
+  }
+}
+
+/* Safe area: se aplica en navbar y botón WhatsApp (app.css) para notch iOS/Android */
+
+/* Tamaño mínimo de fuente para legibilidad en móvil */
+@media (max-width: 480px) {
+  body {
+    font-size: 16px;
   }
 }

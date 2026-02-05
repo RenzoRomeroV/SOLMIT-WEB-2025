@@ -33,42 +33,46 @@ export class NavbarComponent implements OnInit, OnDestroy {
   @HostListener('window:scroll', [])
   onWindowScroll() {
     const currentScrollY = window.scrollY;
+
+    // En la parte superior de la página (incluido al cargar) el navbar siempre visible
+    if (currentScrollY < 80) {
+      this.isNavbarVisible = true;
+      this.isScrolled = currentScrollY > 20;
+      this.lastScrollY = currentScrollY;
+      return;
+    }
+
     const queHacemosSection = document.getElementById('que-hacemos');
-    
-    // Detectar si se ha llegado a la sección "¿QUÉ HACEMOS?"
+
     if (queHacemosSection) {
       const sectionTop = queHacemosSection.offsetTop;
       const sectionHeight = queHacemosSection.offsetHeight;
       const isInSection = currentScrollY >= sectionTop - 100 && currentScrollY < sectionTop + sectionHeight;
-      
-      // Detectar dirección del scroll
+
       const scrollingDown = currentScrollY > this.lastScrollY;
       const scrollingUp = currentScrollY < this.lastScrollY;
-      
+
       if (isInSection || currentScrollY > sectionTop) {
-        // Si estamos en la sección o más abajo
         if (scrollingDown) {
-          // Ocultar navbar al hacer scroll hacia abajo
           this.isNavbarVisible = false;
         } else if (scrollingUp) {
-          // Mostrar navbar al hacer scroll hacia arriba
           this.isNavbarVisible = true;
         }
       } else {
-        // Si estamos antes de la sección, siempre mostrar el navbar
         this.isNavbarVisible = true;
       }
     }
-    
+
     this.isScrolled = currentScrollY > 20;
     this.lastScrollY = currentScrollY;
   }
 
   ngOnInit() {
-    this.onWindowScroll();
-    // Asegurar que isScrolled sea false al inicio
-    this.isScrolled = false;
     this.lastScrollY = window.scrollY;
+    this.isScrolled = window.scrollY > 20;
+    // Navbar visible al cargar y en la parte superior
+    this.isNavbarVisible = true;
+    this.onWindowScroll();
   }
 
   ngOnDestroy() {

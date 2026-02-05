@@ -19,6 +19,12 @@
   display: block;
 }
 
+@media (hover: none) and (pointer: coarse) {
+  .custom-cursor {
+    display: none !important;
+  }
+}
+
 .custom-cursor::before {
   content: '';
   position: absolute;
@@ -64,4 +70,213 @@
 
 .custom-cursor.click {
   transform: translate(-2px, -2px) scale(0.9);
+}
+
+.site-footer {
+  background: rgba(20, 23, 27, 1);
+  border-top: 1px solid rgba(201, 169, 136, 0.25);
+  padding: 2.5rem 2rem 1.5rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.footer-grid {
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.footer-col-brand {
+  align-items: flex-start;
+}
+
+.footer-col-title {
+  margin: 0 0 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(201, 169, 136, 0.95);
+}
+
+.footer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-link {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+  color: rgba(201, 169, 138, 1);
+}
+
+.footer-contact-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.footer-contact-item:hover {
+  color: rgba(201, 169, 138, 1);
+}
+
+.footer-contact-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.whatsapp-fixed {
+  position: fixed;
+  bottom: max(2.5rem, env(safe-area-inset-bottom));
+  right: max(1.25rem, env(safe-area-inset-right));
+  z-index: 9998;
+  width: 56px;
+  height: 56px;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.95);
+  text-decoration: none;
+  background: rgba(20, 23, 27, 0.9);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.whatsapp-fixed.whatsapp-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.whatsapp-fixed:hover {
+  color: #25d366;
+  border-color: rgba(37, 211, 102, 0.6);
+  background: rgba(37, 211, 102, 0.2);
+  transform: scale(1.05);
+}
+
+.whatsapp-fixed svg {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
+}
+
+.footer-logo {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.footer-social {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.footer-social-link {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.footer-social-link:hover {
+  color: rgba(201, 169, 136, 1);
+  border-color: rgba(201, 169, 136, 0.6);
+  background: rgba(201, 169, 136, 0.12);
+}
+
+.footer-social-link svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.footer-copy {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.9rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 768px) {
+  .site-footer {
+    padding: 2rem 1.5rem 1.5rem;
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .footer-col-brand {
+    align-items: center;
+  }
+
+  .footer-col-links .footer-nav {
+    align-items: center;
+  }
+
+  .footer-col-contact {
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-footer {
+    padding: 1.5rem 1rem;
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  }
+
+  .footer-logo {
+    width: 96px;
+    height: 96px;
+  }
+
+  .footer-link,
+  .footer-contact-item {
+    font-size: 0.9rem;
+  }
+
+  .whatsapp-fixed {
+    bottom: max(1.5rem, env(safe-area-inset-bottom));
+    right: max(1rem, env(safe-area-inset-right));
+  }
 }

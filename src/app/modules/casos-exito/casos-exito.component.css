@@ -589,3 +589,16 @@
   }
 }
 
+@media (max-width: 480px) {
+  .hero-section {
+    padding: 3rem 1rem;
+    padding-top: max(3rem, calc(80px + env(safe-area-inset-top)));
+  }
+
+  .projects-section,
+  .testimonials-section,
+  .metrics-section {
+    padding: 2.5rem 1rem;
+  }
+}
+

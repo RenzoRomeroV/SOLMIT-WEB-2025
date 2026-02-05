@@ -3,6 +3,11 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
+    pathMatch: 'full',
+    redirectTo: 'Inicio'
+  },
+  {
+    path: 'Inicio',
     loadComponent: () => import('./modules/inicio/inicio.component').then(m => m.InicioComponent)
   },
   {

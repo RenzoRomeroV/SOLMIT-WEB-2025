@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
+import { provideRouter, withComponentInputBinding, withHashLocation, withInMemoryScrolling } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
@@ -11,8 +11,9 @@ export const appConfig: ApplicationConfig = {
     provideRouter(
       routes,
       withComponentInputBinding(),
+      withHashLocation(),
       withInMemoryScrolling({
-        scrollPositionRestoration: 'top', // Hacer scroll al top en cada cambio de ruta
+        scrollPositionRestoration: 'top',
         anchorScrolling: 'enabled'
       })
     ),

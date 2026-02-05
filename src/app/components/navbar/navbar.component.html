@@ -6,49 +6,50 @@
       </div>
     </div>
 
+    <div class="navbar-overlay" [class.active]="isMenuOpen">
+      <ul class="navbar-menu">
+        <li class="navbar-item" @fadeInUp [style.animation-delay.ms]="0">
+          <a routerLink="/Inicio" class="navbar-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">
+            <span>INICIO</span>
+          </a>
+        </li>
+        <li class="navbar-item" @fadeInUp [style.animation-delay.ms]="50">
+          <a routerLink="/quienes-somos" class="navbar-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">
+            <span>¿QUIÉNES SOMOS?</span>
+          </a>
+        </li>
+        <li class="navbar-item" @fadeInUp [style.animation-delay.ms]="100">
+          <a routerLink="/servicios" class="navbar-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">
+            <span>SERVICIOS</span>
+          </a>
+        </li>
+        <li class="navbar-item" @fadeInUp [style.animation-delay.ms]="150">
+          <a routerLink="/casos-exito" class="navbar-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">
+            <span>CASOS DE ÉXITO</span>
+          </a>
+        </li>
+        <li class="navbar-item" @fadeInUp [style.animation-delay.ms]="200">
+          <a routerLink="/trabaja-con-nosotros" class="navbar-link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">
+            <span>TRABAJA CON NOSOTROS</span>
+          </a>
+        </li>
+      </ul>
+      <a routerLink="/contacto" class="navbar-cta-button" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">
+        CONTACTO
+      </a>
+    </div>
+
     <button 
       class="menu-toggle" 
       [class.active]="isMenuOpen"
       (click)="toggleMenu()"
       [attr.aria-expanded]="isMenuOpen"
-      aria-label="Toggle menu"
+      aria-label="Abrir o cerrar menú"
     >
       <span></span>
       <span></span>
       <span></span>
     </button>
-
-    <ul class="navbar-menu" [class.active]="isMenuOpen">
-      <li class="navbar-item" @fadeInUp [style.animation-delay.ms]="0">
-        <a routerLink="/" class="navbar-link" routerLinkActive="active" (click)="closeMenu()">
-          <span>INICIO</span>
-        </a>
-      </li>
-      <li class="navbar-item" @fadeInUp [style.animation-delay.ms]="50">
-        <a routerLink="/quienes-somos" class="navbar-link" routerLinkActive="active" (click)="closeMenu()">
-          <span>¿QUIÉNES SOMOS?</span>
-        </a>
-      </li>
-      <li class="navbar-item" @fadeInUp [style.animation-delay.ms]="100">
-        <a routerLink="/servicios" class="navbar-link" routerLinkActive="active" (click)="closeMenu()">
-          <span>SERVICIOS</span>
-        </a>
-      </li>
-      <li class="navbar-item" @fadeInUp [style.animation-delay.ms]="150">
-        <a routerLink="/casos-exito" class="navbar-link" routerLinkActive="active" (click)="closeMenu()">
-          <span>CASOS DE ÉXITO</span>
-        </a>
-      </li>
-      <li class="navbar-item" @fadeInUp [style.animation-delay.ms]="200">
-        <a routerLink="/trabaja-con-nosotros" class="navbar-link" routerLinkActive="active" (click)="closeMenu()">
-          <span>TRABAJA CON NOSOTROS</span>
-        </a>
-      </li>
-    </ul>
-
-    <a routerLink="/contacto" class="navbar-cta-button" routerLinkActive="active" (click)="closeMenu()">
-      CONTACTO
-    </a>
   </div>
 </nav>
 

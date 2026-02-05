@@ -3,14 +3,26 @@
   <section class="hero-section">
     <div class="hero-video-wrapper">
       <video 
-        class="hero-video" 
+        class="hero-video hero-video-desktop" 
         src="/assets/videos/Fondofinal.mp4" 
+        poster="/assets/images/Fondo.jpg"
         autoplay 
         muted 
         loop 
         playsinline
         preload="auto"
-        #heroVideo
+        #heroVideoDesktop
+      ></video>
+      <video 
+        class="hero-video hero-video-mobile" 
+        src="/assets/videos/VideoMovilApp.mp4" 
+        poster="/assets/images/Fondo.jpg"
+        autoplay 
+        muted 
+        loop 
+        playsinline
+        preload="auto"
+        #heroVideoMobile
       ></video>
       <div class="hero-overlay"></div>
       <div class="hero-content">
@@ -47,7 +59,7 @@
         @for (service of services; track service.id; let i = $index) {
           <div class="service-card" [class.reverse]="i % 2 === 1">
             <div class="service-image-wrapper">
-              <img [src]="service.image" [alt]="service.title" class="service-image" />
+              <img [src]="service.image" [alt]="service.title" [title]="service.title" class="service-image" />
               <div class="service-overlay"></div>
               <div class="service-number">{{ (i + 1 < 10 ? '0' : '') + (i + 1) }}</div>
             </div>
@@ -79,7 +91,7 @@
         </button>
         <div class="modal-body">
           <div class="modal-image-wrapper">
-            <img [src]="selectedService.image" [alt]="selectedService.title" class="modal-image" />
+            <img [src]="selectedService.image" [alt]="selectedService.title" [title]="selectedService.title" class="modal-image" />
           </div>
           <div class="modal-text">
             <div class="modal-header">
@@ -169,8 +181,13 @@
                 </div>
               </div>
 
-              <!-- Indicador de expansión -->
-              <div class="card-expand-indicator">
+              <!-- Indicador de expansión (clic para abrir/cerrar en móvil y escritorio) -->
+              <div class="card-expand-indicator" 
+                   (click)="toggleCard(item.id); $event.stopPropagation()"
+                   role="button"
+                   tabindex="0"
+                   (keydown.enter)="toggleCard(item.id)"
+                   (keydown.space)="toggleCard(item.id); $event.preventDefault()">
                 <span class="expand-text">{{ expandedCard() === item.id ? 'OCULTAR' : 'VER MÁS' }}</span>
                 <span class="expand-arrow">{{ expandedCard() === item.id ? '↑' : '↓' }}</span>
               </div>
@@ -202,7 +219,8 @@
         <!-- Team Solmit Image -->
         <div class="team-image-wrapper" @fadeIn>
           <img src="/assets/images/solmit2.png" 
-               alt="Team Solmit - Trabajo en equipo" 
+               alt="Team Solmit - Trabajo en equipo"
+               title="Team Solmit - Trabajo en equipo"
                class="team-image" />
         </div>
       </div>
@@ -262,6 +280,13 @@
                 </div>
               </div>
               
+              <!-- Imagen del sector (solo visible en móvil, debajo de la descripción) -->
+              @if (sector.image) {
+                <div class="sector-item-image-mobile">
+                  <img [src]="sector.image" [alt]="sector.name" [title]="sector.name" />
+                </div>
+              }
+              
               <!-- Fondo -->
               <div class="item-bg"></div>
               <div class="item-glow"></div>
@@ -275,7 +300,8 @@
                [class.visible]="visibleTooltip() !== null">
             <div class="image-glow-ring"></div>
             <img [src]="getSectorImage()" 
-                 alt="Sectores con los que trabajamos" 
+                 alt="Sectores con los que trabajamos"
+                 title="Sectores con los que trabajamos"
                  class="sector-display-image"
                  (error)="onImageError($event)"
                  (load)="onImageLoad($event)" />
@@ -293,18 +319,65 @@
 
   <!-- Experience Section -->
   <section class="experience-section">
+    <!-- Chispas animadas de fondo -->
+    <div class="sparks-container">
+      @for (spark of sparks; track spark.id) {
+        <div class="spark" 
+             [style.left.%]="spark.x"
+             [style.top.%]="spark.y"
+             [style.animation-delay.s]="spark.delay"
+             [style.animation-duration.s]="spark.duration"></div>
+      }
+    </div>
     <div class="container">
-      <h2 class="section-title" @fadeIn>TENEMOS EXPERIENCIA EN EL SECTOR</h2>
-      <div class="sectors-grid">
-        <div class="sector-card" @fadeIn>
-          <div class="sector-icon">🏛️</div>
-          <h3>SECTOR PÚBLICO</h3>
-          <p>Soluciones tecnológicas para instituciones gubernamentales</p>
+      <h2 class="section-title" @fadeIn>EXPERIENCIA EN DIFERENTES SECTORES</h2>
+      <div class="experience-grid">
+        <div class="experience-block" @fadeIn>
+          <h3 class="experience-title">SECTOR PÚBLICO</h3>
+          <p class="experience-description">
+            Contamos con experiencia desarrollando páginas web y sistemas digitales para entidades del sector público, cumpliendo estándares de seguridad, accesibilidad y normativas estatales.
+          </p>
+          @if (publicSectorItems.length) {
+            <div class="experience-carousel">
+              <button class="experience-arrow left" (click)="scrollCarousel('public', -1)" aria-label="Anterior">
+                ‹
+              </button>
+              <div class="experience-track" #publicCarousel>
+                @for (sector of publicSectorItems; track sector.name) {
+                  <article class="experience-item">
+                  @if (sector.image) {
+                    <img [src]="sector.image" [alt]="sector.name" [title]="sector.name" class="experience-item-image" />
+                  }
+                    <h4>{{ sector.name }}</h4>
+                  </article>
+                }
+              </div>
+              <button class="experience-arrow right" (click)="scrollCarousel('public', 1)" aria-label="Siguiente">
+                ›
+              </button>
+            </div>
+          }
         </div>
-        <div class="sector-card" @fadeIn [style.animation-delay.ms]="200">
-          <div class="sector-icon">🏢</div>
-          <h3>SECTOR PRIVADO</h3>
-          <p>Innovación tecnológica para empresas de todos los tamaños</p>
+        <div class="experience-block" @fadeIn [style.animation-delay.ms]="200">
+          <h3 class="experience-title">SECTOR PRIVADO</h3>
+          @if (privateSectorItems.length) {
+            <div class="experience-carousel">
+              <button class="experience-arrow left" (click)="scrollCarousel('private', -1)" aria-label="Anterior">
+                ‹
+              </button>
+              <div class="experience-track" #privateCarousel>
+                @for (sector of privateSectorItems; track sector.name) {
+                  <article class="experience-item">
+                    <img [src]="sector.image" [alt]="sector.name" [title]="sector.name" class="experience-item-image" />
+                    <h4>{{ sector.name }}</h4>
+                  </article>
+                }
+              </div>
+              <button class="experience-arrow right" (click)="scrollCarousel('private', 1)" aria-label="Siguiente">
+                ›
+              </button>
+            </div>
+          }
         </div>
       </div>
     </div>
@@ -312,46 +385,88 @@
 
   <!-- Technologies Section -->
   <section class="technologies-section">
+    <!-- Chispas animadas de fondo -->
+    <div class="sparks-container">
+      @for (spark of sparks; track spark.id) {
+        <div class="spark" 
+             [style.left.%]="spark.x"
+             [style.top.%]="spark.y"
+             [style.animation-delay.s]="spark.delay"
+             [style.animation-duration.s]="spark.duration"></div>
+      }
+    </div>
     <div class="container">
       <h2 class="section-title" @fadeIn>TECNOLOGÍAS Y HERRAMIENTAS QUE UTILIZAMOS</h2>
-      <div class="tech-tabs">
-        <button class="tech-tab active">WEB</button>
-        <button class="tech-tab">MÓVIL</button>
-        <button class="tech-tab">TECNOLOGÍA</button>
-      </div>
-      <div class="tech-content">
-        <p class="tech-description">Utilizamos las tecnologías más modernas y eficientes del mercado</p>
+      <div class="tech-layout" [class.tech-layout--active]="hasSelectedTech()">
+        <div class="tech-columns">
+          <article
+            class="tech-panel"
+            [class.active]="activeTechTab() === 'web'"
+            (click)="selectTechTab('web')"
+            @fadeIn>
+            <h3 class="tech-panel-title">Desarrollo Web</h3>
+            <div class="tech-panel-image">
+              <img src="/assets/images/DevWeb.png" alt="Desarrollo Web" title="Desarrollo Web" />
+            </div>
+            <div class="tech-details-mobile">
+              <div class="tech-details-list">
+                @for (item of getTechItemsFor('web'); track item; let i = $index) {
+                  <span class="tech-details-chip" [style.animation-delay.ms]="i * 80">{{ item }}</span>
+                }
+              </div>
+            </div>
+          </article>
+          <article
+            class="tech-panel"
+            [class.active]="activeTechTab() === 'movil'"
+            (click)="selectTechTab('movil')"
+            @fadeIn
+            [style.animation-delay.ms]="120">
+            <h3 class="tech-panel-title">Desarrollo App Móvil</h3>
+            <div class="tech-panel-image">
+              <img src="/assets/images/DevApp.png" alt="Desarrollo App Móvil" title="Desarrollo App Móvil" />
+            </div>
+            <div class="tech-details-mobile">
+              <div class="tech-details-list">
+                @for (item of getTechItemsFor('movil'); track item; let i = $index) {
+                  <span class="tech-details-chip" [style.animation-delay.ms]="i * 80">{{ item }}</span>
+                }
+              </div>
+            </div>
+          </article>
+          <article
+            class="tech-panel"
+            [class.active]="activeTechTab() === 'tecnologia'"
+            (click)="selectTechTab('tecnologia')"
+            @fadeIn
+            [style.animation-delay.ms]="240">
+            <h3 class="tech-panel-title">Tecnologías</h3>
+            <div class="tech-panel-image">
+              <img src="/assets/images/Tecnologia.jpg" alt="Tecnologías" title="Tecnologías" />
+            </div>
+            <div class="tech-details-mobile">
+              <div class="tech-details-list">
+                @for (item of getTechItemsFor('tecnologia'); track item; let i = $index) {
+                  <span class="tech-details-chip" [style.animation-delay.ms]="i * 80">{{ item }}</span>
+                }
+              </div>
+            </div>
+          </article>
+        </div>
+        <div
+          class="tech-details"
+          [class.tech-details--web]="activeTechTab() === 'web'"
+          [class.tech-details--movil]="activeTechTab() === 'movil'"
+          [class.tech-details--tecnologia]="activeTechTab() === 'tecnologia'">
+          <div class="tech-details-list">
+            @for (item of getActiveTechItems(); track item; let i = $index) {
+              <span class="tech-details-chip" [style.animation-delay.ms]="i * 240">{{ item }}</span>
+            }
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Why Choose Us Section -->
-  <section class="why-section">
-    <div class="container">
-      <h2 class="section-title" @fadeIn>¿POR QUÉ ELEGIRNOS?</h2>
-      <div class="why-grid">
-        <div class="why-card" @fadeIn>
-          <div class="why-icon">🏆</div>
-          <h3>Calidad Certificada</h3>
-          <p>ISO 9001:2015 y CMMI DEV3 certificados</p>
-        </div>
-        <div class="why-card" @fadeIn [style.animation-delay.ms]="100">
-          <div class="why-icon">👨‍💼</div>
-          <h3>Personal Certificado</h3>
-          <p>Equipo con certificaciones en tecnologías líderes</p>
-        </div>
-        <div class="why-card" @fadeIn [style.animation-delay.ms]="200">
-          <div class="why-icon">🤝</div>
-          <h3>Soporte Continuo</h3>
-          <p>Acompañamiento incluso después de la entrega</p>
-        </div>
-        <div class="why-card" @fadeIn [style.animation-delay.ms]="300">
-          <div class="why-icon">💰</div>
-          <h3>Precios Competitivos</h3>
-          <p>Presupuestos atractivos con metodologías ágiles</p>
-        </div>
-      </div>
-    </div>
-  </section>
 </div>
 
