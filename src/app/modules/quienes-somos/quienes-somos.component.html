@@ -1,49 +1,63 @@
 <div class="quienes-somos-container">
   <!-- Hero Section -->
   <section class="hero-section">
+    <div class="hero-bg"></div>
     <div class="hero-content">
-      <h1 class="hero-title" @fadeIn>¿QUIÉNES SOMOS?</h1>
-      <p class="hero-subtitle" @fadeIn [style.animation-delay.ms]="100">
+      <h1 class="hero-title" @fadeIn>¿Quiénes somos?</h1>
+      <p class="hero-subtitle" @fadeInUp [style.animation-delay.ms]="150">
         Transformamos ideas en soluciones tecnológicas innovadoras
       </p>
+      <span class="hero-line" @fadeInUp [style.animation-delay.ms]="400"></span>
     </div>
   </section>
 
   <!-- Historia Section -->
-  <section class="historia-section">
+  <section
+    id="historia-section"
+    class="historia-section"
+    data-observe-section>
+    <div class="section-sparks-container">
+      @for (spark of sparks; track spark.id) {
+        <div class="section-spark"
+             [style.left.%]="spark.x"
+             [style.top.%]="spark.y"
+             [style.animation-delay.s]="spark.delay"
+             [style.animation-duration.s]="spark.duration"></div>
+      }
+    </div>
     <div class="container">
-      <div class="historia-content" @fadeIn>
+      <div class="historia-content">
         <div class="historia-text">
-          <h2 class="section-title">Nuestra Historia</h2>
+          <h2 class="section-title">Nuestra historia</h2>
           <p class="historia-description">
-            SOLMIT nació con la visión de ser el socio tecnológico estratégico que las empresas necesitan 
-            para alcanzar sus objetivos de transformación digital. Desde nuestros inicios, nos hemos 
-            especializado en brindar soluciones tecnológicas de alta calidad que impulsan el crecimiento 
+            SOLMIT nació con la visión de ser el socio tecnológico estratégico que las empresas necesitan
+            para alcanzar sus objetivos de transformación digital. Desde nuestros inicios, nos hemos
+            especializado en brindar soluciones tecnológicas de alta calidad que impulsan el crecimiento
             y la innovación de nuestros clientes.
           </p>
           <p class="historia-description">
-            Con años de experiencia en el mercado, hemos consolidado un equipo multidisciplinario de 
-            profesionales altamente calificados, certificados en las tecnologías más modernas y 
+            Con años de experiencia en el mercado, hemos consolidado un equipo multidisciplinario de
+            profesionales altamente calificados, certificados en las tecnologías más modernas y
             metodologías ágiles del mercado.
           </p>
         </div>
         <div class="historia-visual">
           <div class="stats-grid">
             <div class="stat-card">
-              <div class="stat-number">+10</div>
-              <div class="stat-label">Años de Experiencia</div>
+              <div class="stat-number">+{{ statYears() }}</div>
+              <div class="stat-label">Años de experiencia</div>
             </div>
             <div class="stat-card">
-              <div class="stat-number">+30</div>
+              <div class="stat-number">+{{ statPeople() }}</div>
               <div class="stat-label">Profesionales</div>
             </div>
             <div class="stat-card">
-              <div class="stat-number">+100</div>
-              <div class="stat-label">Proyectos Exitosos</div>
+              <div class="stat-number">+{{ statProjects() }}</div>
+              <div class="stat-label">Proyectos exitosos</div>
             </div>
             <div class="stat-card">
-              <div class="stat-number">+50</div>
-              <div class="stat-label">Clientes Satisfechos</div>
+              <div class="stat-number">+{{ statClients() }}</div>
+              <div class="stat-label">Clientes satisfechos</div>
             </div>
           </div>
         </div>
@@ -51,25 +65,45 @@
     </div>
   </section>
 
-  <!-- Misión y Visión Section -->
-  <section class="mision-vision-section">
+  <!-- Misión y Visión -->
+  <section class="mision-vision-section" data-observe-section>
+    <div class="section-sparks-container">
+      @for (spark of sparks; track spark.id) {
+        <div class="section-spark"
+             [style.left.%]="spark.x"
+             [style.top.%]="spark.y"
+             [style.animation-delay.s]="spark.delay"
+             [style.animation-duration.s]="spark.duration"></div>
+      }
+    </div>
     <div class="container">
       <div class="mision-vision-grid">
-        <div class="mision-card" @fadeIn>
-          <div class="card-icon">🎯</div>
+        <div class="mision-card card-reveal">
+          <span class="card-icon" aria-hidden="true">
+            <svg class="card-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <circle cx="12" cy="12" r="6"/>
+              <circle cx="12" cy="12" r="2"/>
+            </svg>
+          </span>
           <h3 class="card-title">Misión</h3>
           <p class="card-description">
-            Proporcionar soluciones tecnológicas innovadoras y de alta calidad que impulsen la 
-            transformación digital de nuestros clientes, brindando servicios de excelencia con 
+            Proporcionar soluciones tecnológicas innovadoras y de alta calidad que impulsen la
+            transformación digital de nuestros clientes, brindando servicios de excelencia con
             metodologías ágiles y un equipo altamente calificado.
           </p>
         </div>
-        <div class="vision-card" @fadeIn [style.animation-delay.ms]="200">
-          <div class="card-icon">👁️</div>
+        <div class="vision-card card-reveal">
+          <span class="card-icon" aria-hidden="true">
+            <svg class="card-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </span>
           <h3 class="card-title">Visión</h3>
           <p class="card-description">
-            Ser reconocidos como el socio tecnológico líder en Suramérica, destacándonos por nuestra 
-            innovación, calidad certificada y compromiso con el éxito de nuestros clientes en su 
+            Ser reconocidos como el socio tecnológico líder en Suramérica, destacándonos por nuestra
+            innovación, calidad certificada y compromiso con el éxito de nuestros clientes en su
             transformación digital.
           </p>
         </div>
@@ -77,83 +111,66 @@
     </div>
   </section>
 
-  <!-- Valores Section -->
-  <section class="valores-section">
+  <!-- Valores -->
+  <section class="valores-section" data-observe-section>
+    <div class="section-sparks-container">
+      @for (spark of sparks; track spark.id) {
+        <div class="section-spark"
+             [style.left.%]="spark.x"
+             [style.top.%]="spark.y"
+             [style.animation-delay.s]="spark.delay"
+             [style.animation-duration.s]="spark.duration"></div>
+      }
+    </div>
     <div class="container">
-      <h2 class="section-title" @fadeIn>Nuestros Valores</h2>
+      <h2 class="section-title">Nuestros valores</h2>
       <div class="valores-grid">
-        <div class="valor-card" @fadeIn [style.animation-delay.ms]="0">
-          <div class="valor-icon">💡</div>
-          <h3 class="valor-title">Innovación</h3>
-          <p class="valor-description">
-            Buscamos constantemente nuevas tecnologías y metodologías para ofrecer soluciones de vanguardia.
-          </p>
-        </div>
-        <div class="valor-card" @fadeIn [style.animation-delay.ms]="100">
-          <div class="valor-icon">⚡</div>
-          <h3 class="valor-title">Agilidad</h3>
-          <p class="valor-description">
-            Trabajamos con metodologías ágiles que nos permiten adaptarnos rápidamente a las necesidades del cliente.
-          </p>
-        </div>
-        <div class="valor-card" @fadeIn [style.animation-delay.ms]="200">
-          <div class="valor-icon">🏆</div>
-          <h3 class="valor-title">Calidad</h3>
-          <p class="valor-description">
-            Mantenemos los más altos estándares de calidad certificados internacionalmente.
-          </p>
-        </div>
-        <div class="valor-card" @fadeIn [style.animation-delay.ms]="300">
-          <div class="valor-icon">🤝</div>
-          <h3 class="valor-title">Compromiso</h3>
-          <p class="valor-description">
-            Estamos comprometidos con el éxito de nuestros clientes y el crecimiento continuo de nuestro equipo.
-          </p>
-        </div>
-        <div class="valor-card" @fadeIn [style.animation-delay.ms]="400">
-          <div class="valor-icon">🔒</div>
-          <h3 class="valor-title">Transparencia</h3>
-          <p class="valor-description">
-            Mantenemos una comunicación clara y transparente en todos nuestros procesos y proyectos.
-          </p>
-        </div>
-        <div class="valor-card" @fadeIn [style.animation-delay.ms]="500">
-          <div class="valor-icon">🌱</div>
-          <h3 class="valor-title">Mejora Continua</h3>
-          <p class="valor-description">
-            Nos enfocamos en el aprendizaje constante y la mejora continua de nuestros procesos.
-          </p>
-        </div>
+        @for (valor of valores; track valor.title) {
+          <div class="valor-card card-reveal">
+            <span class="valor-icon" [innerHTML]="valor.icon" aria-hidden="true"></span>
+            <h3 class="valor-title">{{ valor.title }}</h3>
+            <p class="valor-description">{{ valor.description }}</p>
+          </div>
+        }
       </div>
     </div>
   </section>
 
-  <!-- Certificaciones Section -->
-  <section class="certificaciones-section">
+  <!-- Certificaciones -->
+  <section class="certificaciones-section" data-observe-section>
+    <div class="section-sparks-container">
+      @for (spark of sparks; track spark.id) {
+        <div class="section-spark"
+             [style.left.%]="spark.x"
+             [style.top.%]="spark.y"
+             [style.animation-delay.s]="spark.delay"
+             [style.animation-duration.s]="spark.duration"></div>
+      }
+    </div>
     <div class="container">
-      <h2 class="section-title" @fadeIn>Certificaciones y Estándares</h2>
+      <h2 class="section-title">Certificaciones y estándares</h2>
       <div class="certificaciones-grid">
-        <div class="certificacion-card" @fadeIn>
-          <div class="cert-icon">✅</div>
+        <div class="certificacion-card card-reveal">
+          <span class="cert-icon" aria-hidden="true">ISO</span>
           <h3 class="cert-title">ISO 9001:2015</h3>
           <p class="cert-description">
-            Certificación internacional de gestión de calidad que garantiza nuestros procesos 
+            Certificación internacional de gestión de calidad que garantiza nuestros procesos
             estandarizados y mejora continua.
           </p>
         </div>
-        <div class="certificacion-card" @fadeIn [style.animation-delay.ms]="200">
-          <div class="cert-icon">⭐</div>
+        <div class="certificacion-card card-reveal">
+          <span class="cert-icon" aria-hidden="true">CMMI</span>
           <h3 class="cert-title">CMMI DEV3</h3>
           <p class="cert-description">
-            Nivel 3 de madurez en desarrollo de software, demostrando procesos definidos y 
+            Nivel 3 de madurez en desarrollo de software, demostrando procesos definidos y
             capacidad de gestión de proyectos complejos.
           </p>
         </div>
-        <div class="certificacion-card" @fadeIn [style.animation-delay.ms]="400">
-          <div class="cert-icon">🎓</div>
-          <h3 class="cert-title">Personal Certificado</h3>
+        <div class="certificacion-card card-reveal">
+          <span class="cert-icon" aria-hidden="true">★</span>
+          <h3 class="cert-title">Personal certificado</h3>
           <p class="cert-description">
-            Nuestro equipo cuenta con certificaciones en tecnologías líderes como AWS, Azure, 
+            Nuestro equipo cuenta con certificaciones en tecnologías líderes como AWS, Azure,
             Scrum, PMP y más.
           </p>
         </div>
@@ -161,4 +178,3 @@
     </div>
   </section>
 </div>
-

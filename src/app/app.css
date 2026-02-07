@@ -73,7 +73,7 @@
 }
 
 .site-footer {
-  background: rgba(20, 23, 27, 1);
+  background: linear-gradient(180deg, #0c0e12 0%, #11141a 50%, #0e1116 100%);
   border-top: 1px solid rgba(201, 169, 136, 0.25);
   padding: 2.5rem 2rem 1.5rem;
   color: rgba(255, 255, 255, 0.75);
@@ -124,6 +124,13 @@
   color: rgba(201, 169, 138, 1);
 }
 
+.footer-link:focus,
+.footer-link:focus-visible,
+.footer-link:active {
+  outline: none;
+  box-shadow: none;
+}
+
 .footer-contact-item {
   display: inline-flex;
   align-items: center;
@@ -138,10 +145,55 @@
   color: rgba(201, 169, 138, 1);
 }
 
+.footer-contact-item:focus,
+.footer-contact-item:focus-visible,
+.footer-contact-item:active {
+  outline: none;
+  box-shadow: none;
+}
+
 .footer-contact-icon {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
+}
+
+.footer-contact-img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.footer-reclamos-link {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.25rem;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.footer-reclamos-link:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+.footer-reclamos-link:focus,
+.footer-reclamos-link:focus-visible,
+.footer-reclamos-link:active {
+  outline: none;
+  box-shadow: none;
+}
+
+.footer-reclamos-link img {
+  outline: none;
+  pointer-events: none;
+}
+
+.footer-reclamos-img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  display: block;
 }
 
 .whatsapp-fixed {
@@ -218,6 +270,13 @@
   background: rgba(201, 169, 136, 0.12);
 }
 
+.footer-social-link:focus,
+.footer-social-link:focus-visible,
+.footer-social-link:active {
+  outline: none;
+  box-shadow: none;
+}
+
 .footer-social-link svg {
   width: 16px;
   height: 16px;
@@ -276,7 +335,7 @@
   }
 
   .whatsapp-fixed {
-    bottom: max(1.5rem, env(safe-area-inset-bottom));
+    bottom: max(5rem, env(safe-area-inset-bottom));
     right: max(1rem, env(safe-area-inset-right));
   }
 }
